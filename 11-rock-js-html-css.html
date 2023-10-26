@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        body{
+            color: rgb(73, 73, 200);
+            padding: 10px;
+            background-color: rgb(229, 208, 243);
+            box-shadow: 20px 0px 110px;
+        }
+        p {
+            color: rgb(0, 0, 0);
+            font-weight: 200;
+            font-style: italic;
+            font-size: large;
+            padding: 1px;
+        }
+
+        .heading {
+            padding: 2px;
+            text-indent: 1px;
+           color: rgb(0, 0, 0);
+            font-size: x-large;
+            font-variant: small-caps;
+            font-style: normal;
+           box-shadow: 1px 1px 10px;
+        }
+
+        .buttons {
+            transition: transform 0.8s,box-shadow 0.8s;
+    border: 2px solid blue;
+    height: 100px;
+    width: 100px;
+    margin: 20px;
+    border-radius: 50px;
+    box-shadow: 1px 1px 10px;
+    background-color: white; /* Set the background of the container to be transparent */
+}
+
+.buttons:hover {
+   transform: scale(1.2);
+   box-shadow: 4px 3.5px 10px;
+}
+.images {
+    height: 40px;
+    width: 40px;
+}
+
+.result-text {
+    color: rgb(13, 13, 90);
+    margin: 100px;
+    
+    font-style: normal;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: larger; /* Adjust the size as needed */
+    font-variant: small-caps;
+}
+
+
+
+button[type="reset"] {
+    background-color: #287cca; /* Set the background color */
+    color: #fff; /* Set the text color to white */
+    border: none; /* Remove the button border */
+    padding: 10px 20px; /* Add padding to the button */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer; /* Show a hand cursor on hover */
+    transition: background-color 0.3s; /* Add a smooth color transition on hover */
+}
+
+
+button[type="reset"]:hover {
+    background-color: #290f87;
+}
+
+
+
+    </style>
+
+
+
+
+</head>
+<body>
+
+    <p class="heading">Rock Paper Scissors</p>
+    <button class="buttons" onclick="comp=compf(); compa('rock');"><img class="images" src="207-2077319_scissors-icon-png.png" ></button>
+    <button class="buttons" onclick="comp=compf(); compa('paper');"><img class="images" src="51-511523_rock-paper-rock-paper-scissors-clipart-png-download.png" ></button>
+    <button class="buttons" onclick="comp=compf(); compa('Scissors');"><img class="images" src="OIP.jpeg" ></button>
+
+    <p class="js-score"></p>
+    <p class="js-score-2"></p>
+    
+    <button type="reset" onclick="resetScore();">Reset</button>
+</body>
+
+<script>
+    
+    let score = JSON.parse(localStorage.getItem('score'));
+    let user;
+    let comp;
+    let result;
+
+    if (score === null) {
+        score = {
+            wins: 0,
+            loses: 0,
+            ties: 0
+        };
+    }
+    
+    updatescore();
+    
+    function compf() {
+        const r = Math.random();
+        if (r < 0.33)
+            comp = 'rock';
+        else if (r > 0.33 && r < 0.66)
+            comp = 'paper';
+        else
+            comp = 'Scissors';
+        return comp;
+    }
+    
+    function compa(userChoice) {
+        user = userChoice;
+        if (userChoice === 'rock') {
+            if (comp == userChoice) {
+                result = "It's a tie";
+               
+            }
+            else if (comp == 'paper') {
+                result = 'Computer wins';
+            }
+            else {
+                result = 'You win';
+            }
+        }
+        else if (userChoice === 'paper') {
+            if (comp == userChoice) {
+                result = 'It\'s a tie';
+            }
+            else if (comp == 'rock') {
+                result = 'You win';
+            }
+            else {
+                result = 'Computer wins';
+            }
+        }
+        else {
+            if (comp == userChoice) {
+                result = 'It\'s a tie';
+            }
+            else if (comp == 'paper') {
+                result = 'You win';
+            }
+            else {
+                result = 'Computer wins';
+            }
+        }
+
+        if (result === 'It\'s a tie') {
+            score.ties = score.ties + 1;
+        }
+        else if (result === 'You win') {
+            score.wins = score.wins + 1;
+        }
+        else {
+            score.loses = score.loses + 1;
+        }
+
+        localStorage.setItem('score', JSON.stringify(score));
+        
+        updatescore();
+    }
+
+    function updatescore() {
+        document.querySelector('.js-score')
+            .innerHTML = `Wins: ${score.wins} Loses: ${score.loses} Ties: ${score.ties}`;
+        document.querySelector('.js-score-2')
+            .innerHTML = `You::${user} &&  Computer::${comp}<br> <span class="result-text"> ${result}</span>`;
+    }
+
+    function resetScore() {
+        score.loses = 0;
+        score.wins = 0;
+        score.ties = 0;
+        localStorage.removeItem('score');
+        updatescore();
+    }
+
+    console.log(JSON.stringify(score));
+      
+</script>
+</html>
